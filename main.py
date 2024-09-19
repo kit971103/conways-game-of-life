@@ -41,13 +41,22 @@ def main(fps: int = 5, time_s: int = 30):
     random_map = Campus(20).ramdom_campus(odd = 3)
     game = GameOfLive(random_map, style, classic_rule)
 
-    for _ in range(time_s * fps):
+    def _cycle():
         game.display()
         time.sleep(1/fps)
         game.clear()
         game.step()
+        
+    if time_s is not None:
+        for _ in range(time_s * fps):
+            _cycle()
+    else:
+        while True:
+            _cycle()
+    
     game.display()
     print('Endeddddddddddddddddddddddddddddddddd')
+        
 
 
 def get_int_input(msg: str) -> int:
@@ -60,12 +69,15 @@ def get_int_input(msg: str) -> int:
             print("enter an integer!")
             continue
         
-        if isinstance(n, int) and n != 0:
+        if isinstance(n, int):
             print(f"got {n}")
             return n
         
 
 if __name__ == "__main__":
     duration = get_int_input("Enter time: ")
+    if duration == 0:
+        duration = None
     fps = get_int_input("Enter fps: ")
     main(fps, duration)
+    exit(0)
